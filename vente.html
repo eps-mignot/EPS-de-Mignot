@@ -38,6 +38,22 @@
         <p>Pack complet : <strong>39 €</strong></p>
 
         <a class="button" href="TON_LIEN_STRIPE">Acheter le pack EPS</a>
+        <form action="https://cool-rice-3b06.florianmignot.workers.dev/" method="POST">
+  <label>Email :</label>
+  <input type="email" name="payer_email" required>
+
+  <label>PCID :</label>
+  <input type="text" name="custom" required>
+
+  <label>Licence :</label>
+  <select name="option_selection1">
+    <option value="ANNUELLE">Licence annuelle</option>
+    <option value="MENSUELLE">Licence mensuelle</option>
+  </select>
+
+  <button type="submit">Obtenir ma licence</button>
+</form>
+
     </section>
 </main>
 

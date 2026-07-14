@@ -3,67 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <title>Licence EPS</title>
-   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <h2>Génération de licence EPS</h2>
+<header class="header">
+  <h1>Génération de licence EPS</h1>
+</header>
 
-  <label>Email :</label><br>
-  <input type="email" id="email" required><br><br>
+<main class="container">
 
-  <label>Produit :</label><br>
-  <select id="productID">
-    <option value="TOURNOI_EPS">Tournoi EPS</option>
-    <option value="APPRECIATIONS_EPS">Appréciations EPS</option>
-    <option value="APPRECIATIONS_PP">Appréciations Prof Principal</option>
-  </select><br><br>
+  <section class="card">
+    <h2>Activer votre licence</h2>
 
-  <label>Type de licence :</label><br>
-  <input type="radio" name="typeLicence" value="annuelle" checked> Licence annuelle<br>
-  <input type="radio" name="typeLicence" value="vie"> Licence à vie<br><br>
+    <form id="formLicence">
 
-  <label>PCID de la machine :</label><br>
-  <input type="text" id="pcid" required><br><br>
+      <label>Email :</label>
+      <input type="email" id="email" required>
 
-  <button onclick="envoyer()">Envoyer</button>
+      <label>Produit :</label>
+      <select id="productID">
+        <option value="TOURNOI_EPS">Tournoi EPS</option>
+        <option value="APPRECIATIONS_EPS">Appréciations EPS</option>
+        <option value="APPRECIATIONS_PP">Appréciations Prof Principal</option>
+      </select>
 
-  <pre id="resultat"></pre>
+      <label>Type de licence :</label>
+      <div class="radio-group">
+        <label><input type="radio" name="typeLicence" value="annuelle" checked> Licence annuelle</label>
+        <label><input type="radio" name="typeLicence" value="vie"> Licence à vie</label>
+      </div>
 
-  <script>
-    async function envoyer() {
-      const email = document.getElementById("email").value;
-      const productID = document.getElementById("productID").value;
-      const pcid = document.getElementById("pcid").value;
-      const typeLicence = document.querySelector('input[name="typeLicence"]:checked').value;
+      <label>PCID de la machine :</label>
+      <input type="text" id="pcid" required>
 
-      if (!email || !pcid) {
-        alert("Email et PCID sont obligatoires.");
-        return;
-      }
+      <button type="submit" class="btn">Envoyer</button>
 
-      const payload = {
-        email: email,
-        productID: productID,
-        pcid: pcid,
-        typeLicence: typeLicence
-      };
+    </form>
 
-      try {
-        const response = await fetch("https://long-firefly-0063.florianmignot.workers.dev/", {
- 	method: "POST",
- 	headers: { "Content-Type": "application/json" },
- 	body: JSON.stringify(payload)
-      });
+    <div id="result"></div>
+  </section>
 
+</main>
 
-        const texte = await response.text();
-        document.getElementById("resultat").textContent = "Réponse Worker : " + texte;
-      } catch (err) {
-        document.getElementById("resultat").textContent = "Erreur : " + err;
-      }
+<footer class="footer">
+  © 2026 – EPS de Mignot
+</footer>
+
+<script>
+document.getElementById("formLicence").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const payload = {
+        email: document.getElementById("email").value,
+        pcid: document.getElementById("pcid").value,
+        typeLicence: document.querySelector('input[name="typeLicence"]:checked').value,
+        productID: document.getElementById("productID").value
+    };
+
+    const res = await fetch("https://TON_WORKER.cloudflare.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+        document.getElementById("result").innerHTML = "✔ Licence envoyée par email.";
+    } else {
+        document.getElementById("result").innerHTML = "❌ Erreur lors de la génération.";
     }
-  </script>
+});
+</script>
 
 </body>
 </html>

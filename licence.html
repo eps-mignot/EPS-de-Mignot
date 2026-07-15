@@ -37,7 +37,7 @@
     <label>PCID de la machine :</label>
     <input type="text" id="pcid" required class="input">
 
-    <button onclick="envoyer()" class="btn">Envoyer</button>
+    <button onclick="envoyer()" class="btn">Payer</button>
 
     <pre id="resultat" class="result"></pre>
 
@@ -69,14 +69,17 @@ async function envoyer() {
   };
 
   try {
-    const response = await fetch("https://long-firefly-0063.florianmignot.workers.dev/", {
+    const response = await fetch("https://long-firefly-0063.florianmignot.workers.dev/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
-    const texte = await response.text();
-    document.getElementById("resultat").textContent = "Réponse Worker : " + texte;
+    const data = await response.json();
+
+    // ✔️ Redirection vers Stripe Checkout
+    window.location.href = data.url;
+
   } catch (err) {
     document.getElementById("resultat").textContent = "Erreur : " + err;
   }

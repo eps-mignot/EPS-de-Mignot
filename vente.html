@@ -55,6 +55,46 @@
 
   <button type="submit">Obtenir ma licence</button>
 </form>
+<button onclick="payer()" class="btn-payer">Payer maintenant</button>
+
+<script>
+async function payer() {
+
+  // Récupération des infos (à adapter selon ta page)
+  const email = document.getElementById("email").value;
+  const pcid = document.getElementById("pcid").value;
+  const productID = document.getElementById("productID").value;
+  const typeLicence = document.querySelector('input[name="typeLicence"]:checked').value;
+
+  if (!email || !pcid) {
+    alert("Email et PCID sont obligatoires.");
+    return;
+  }
+
+  const payload = {
+    email: email,
+    productID: productID,
+    pcid: pcid,
+    typeLicence: typeLicence
+  };
+
+  try {
+    const response = await fetch("https://long-firefly-0063.florianmignot.workers.dev/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    // Redirection vers Stripe Checkout
+    window.location.href = data.url;
+
+  } catch (err) {
+    alert("Erreur : " + err);
+  }
+}
+</script>
 
     </section>
 </main>

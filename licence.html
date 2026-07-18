@@ -65,7 +65,8 @@ async function envoyer() {
     email: email,
     productID: productID,
     pcid: pcid,
-    typeLicence: typeLicence
+    typeLicence: typeLicence,
+    secret: "XYZ123"   // ← ajout obligatoire
   };
 
   try {
@@ -77,7 +78,6 @@ async function envoyer() {
 
     const data = await response.json();
 
-    // ✔️ Redirection vers Stripe Checkout
     window.location.href = data.url;
 
   } catch (err) {
@@ -85,6 +85,7 @@ async function envoyer() {
   }
 }
 </script>
+
 
 </body>
 </html>
